@@ -1,0 +1,34 @@
+pipeline {
+  agent any
+
+  tools {
+    nodejs 'Node23'
+  }
+
+  environment {
+    INSTANCE_IP = '15.207.116.118'
+    APP_DIR = '/home/ubuntu/apps/user-feedback-app'
+  }
+
+  stages {
+
+    stage('Deploy') {
+      steps {
+        echo '🚀 Starting Deployment'
+
+        sshagent(credentials: ['user-feedback-app']) {
+          sh '''
+            ssh -o StrictHostKeyChecking=no ubuntu@${INSTANCE_IP} \
+            "cd ${APP_DIR} && chmod +x deploy.sh && ./deploy.sh ${APP_DIR}"
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+}
