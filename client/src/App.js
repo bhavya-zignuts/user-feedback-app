@@ -15,7 +15,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5000/submit", form);
+    await axios.post("http://15.207.116.118:5000/submit", form);
     alert("Data submitted!");
 
     setForm({ username: "", email: "", message: "" });
